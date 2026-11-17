@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}Handgemachtes entdecken | Kleine Manufaktur{% endblock %}
+{% block content %}
+<section class="hero">
+  <p class="eyebrow">HANDGEMACHT · EINZIGARTIG · MIT LIEBE</p>
+  <h1>Besondere Dinge.<br><em>Von echten Menschen gemacht.</em></h1>
+  <p>Entdecke kleine Lieblingsstücke aus unabhängigen Manufakturen.</p>
+  <a class="button dark" href="#produkte">Produkte entdecken</a>
+</section>
+<section id="produkte">
+  <div class="section-heading"><div><p class="eyebrow">UNSERE AUSWAHL</p><h2>Lieblingsstücke</h2></div><span>{{ products|length }} Produkte</span></div>
+  <div class="product-grid">
+    {% for product in products %}
+    <article class="product-card">
+      <a href="{{ url_for('product_detail', product_id=product.id) }}"><img src="{{ product.image_url }}" alt="{{ product.name }}"></a>
+      <div class="product-info"><small>{{ product.category }}</small><h3><a href="{{ url_for('product_detail', product_id=product.id) }}">{{ product.name }}</a></h3>
+      <div class="product-bottom"><strong>{{ product.price_cents|money }} €</strong>
+        <form method="post" action="{{ url_for('add_to_cart', product_id=product.id) }}"><button class="button small" {% if product.stock == 0 %}disabled{% endif %}>In den Warenkorb</button></form>
+      </div></div>
+    </article>
+    {% else %}<p>Noch keine Produkte vorhanden.</p>{% endfor %}
+  </div>
+</section>
+{% endblock %}
